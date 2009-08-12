@@ -1,0 +1,141 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using FuzzySpeech.Model;
+using FuzzySpeech.Audio;
+using FuzzySpeech.Managers;
+using FuzzySpeech.Helper;
+
+namespace FuzzySpeech.Action
+{
+    class GeneticTrainer
+    {
+        private Dictionary<AudioSample, string> samplePhonemeDictionary = new Dictionary<AudioSample, string>();
+
+        public Dictionary<AudioSample, string> SamplePhonemeDictionary
+        {
+            get { return samplePhonemeDictionary; }
+            set { samplePhonemeDictionary = value; }
+        }
+
+        private double fitnessThreshold = 0.9;
+
+        public double FitnessThreshold
+        {
+            get { return fitnessThreshold; }
+            set { fitnessThreshold = value; }
+        }
+
+        GeneticSettings settings;
+
+        public GeneticSettings Settings
+        {
+            get { return settings; }
+            set { settings = value; }
+        }
+
+        private SortedList<double, RecognizerGenome> genePool = new SortedList<double,RecognizerGenome>();
+
+        Recognizer recognizer = new Recognizer();
+
+        public RecognizerGenome Train()
+        {    
+            //Validate parameters
+            if (settings.NumberOfBands <= 0)
+                throw new Exception("Invalid number of bands");
+
+            if (settings.ColorsByBand <= 0)
+                throw new Exception("Invalid number of colors in each band");
+
+            int numberOfGenomes = 100;
+            for (int i = 0; i < numberOfGenomes; i++)
+            {
+                RecognizerGenome genome = ObjectCreator.Instance.CreateRandomGenome(settings, samplePhonemeDictionary.Values.ToList());
+                this.AddToGenePool(genome);               
+            }
+
+            while (this.BestGenePoolFitness() < this.FitnessThreshold)
+            {
+                //Add a mutated copy of all original genomes to the genepool
+                for (int i = 0; i < numberOfGenomes; i++)
+                {
+                    RecognizerGenome genome = genePool.Values[i].Mutate();
+                    this.AddToGenePool(genome);
+                }
+
+                //Add the crossovers of the randomly choosen mates from the original genomes to the genepool
+                List<int> matesList = Helper.Util.RandomInt32List(numberOfGenomes, numberOfGenomes);
+                for (int i = 0; i < numberOfGenomes; i+=2)
+                {
+                    RecognizerGenome genome;
+                    
+                    //Crossover 1
+                    genome = genePool.Values[matesList[i]].CrossOver(genePool.Values[matesList[i + 1]]);
+                    this.AddToGenePool(genome);
+
+                    //Crossover 2
+                    genome = genePool.Values[matesList[i]].CrossOver(genePool.Values[matesList[i + 1]]);
+                    this.AddToGenePool(genome);
+                }
+
+                //Throw out the worst 2/3 of the genomes
+                for (int i = 0; i < genePool.Count - numberOfGenomes; i++)
+                {
+                    genePool.RemoveAt(0);
+                }
+            }
+                
+            return this.BestGenePoolGenome();                
+        }
+
+        private void AddToGenePool(RecognizerGenome genome)
+        {
+            double fitness = this.Fitness(genome);
+
+            //Slightly modify the fitness if necessary, in order to produce a new key
+            while (genePool.ContainsKey(fitness))
+            {
+                fitness -= double.MinValue;
+            }
+
+            //Add to the gene pool
+            genePool.Add(fitness,genome);
+        }
+
+        private RecognizerGenome BestGenePoolGenome()
+        {
+            return genePool.Values[genePool.Count - 1];
+        }
+
+        private double BestGenePoolFitness()
+        {
+            return genePool.Keys[genePool.Count - 1];
+        }
+
+        public string CorrectPhonemeName(AudioSample sample)
+        {
+            return samplePhonemeDictionary[sample];
+        }
+
+        public List<AudioSample> CorrectSet(RecognizerGenome genome)
+        {
+            List<AudioSample> correctSet = new List<AudioSample>();
+            recognizer.Genome = genome;
+
+            foreach (KeyValuePair<AudioSample, string> samplePhonemePair in samplePhonemeDictionary)
+            {
+                AudioSample sample = samplePhonemePair.Key;
+                if (recognizer.RecognizePhoneme(sample).Name == CorrectPhonemeName(sample))
+                    correctSet.Add(samplePhonemePair.Key);
+            }
+
+            return correctSet;
+        }
+
+        public double Fitness(RecognizerGenome genome)
+        {
+            return (double)CorrectSet(genome).Count / (double)samplePhonemeDictionary.Count;
+        }
+    }
+}
