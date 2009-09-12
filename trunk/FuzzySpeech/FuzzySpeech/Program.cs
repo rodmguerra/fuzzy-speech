@@ -8,6 +8,8 @@ using FuzzySpeech.Audio;
 using FuzzySpeech.Action;
 using FuzzySpeech.Managers;
 using FuzzySpeech.Helper;
+using System.Xml;
+using System.IO;
 
 namespace FuzzySpeech
 {
@@ -149,6 +151,31 @@ namespace FuzzySpeech
             List<Phoneme> list = recognizer.ProbablePhonemes(sample);
             */
 
+            using (XmlTextWriter xmlWriter = new XmlTextWriter("son.xml", System.Text.Encoding.UTF8))
+            {
+                xmlWriter.Formatting = Formatting.Indented;
+                xmlWriter.WriteProcessingInstruction("xml", "version='1.0' encoding='UTF-8'");
+                son.ToXml().WriteContentTo(xmlWriter);
+            }
+
+            RecognizerGenome son2 = new RecognizerGenome(
+                SettingsFactory.InstantiateHalavatiColorList(),
+                SettingsFactory.InstantiateHalavatiLengthList());
+
+            using (StreamReader reader = new StreamReader("son.xml"))
+            {
+                XmlDocument document = new XmlDocument();
+                document.InnerXml = reader.ReadToEnd();
+                son2.FromXml(document);
+            }
+
+            using (XmlTextWriter xmlWriter = new XmlTextWriter("son2.xml", System.Text.Encoding.UTF8))
+            {
+                xmlWriter.Formatting = Formatting.Indented;
+                xmlWriter.WriteProcessingInstruction("xml", "version='1.0' encoding='UTF-8'");
+                son2.ToXml().WriteContentTo(xmlWriter);
+            }
+            
             //Testando o trainer
             GeneticTrainer trainer = new GeneticTrainer();
             trainer.FitnessThreshold = 0.99;

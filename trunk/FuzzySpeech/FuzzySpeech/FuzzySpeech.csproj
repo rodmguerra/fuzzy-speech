@@ -57,6 +57,7 @@
     <Compile Include="Managers\RecognizerManager.cs" />
     <Compile Include="Model\CommonObject.cs" />
     <Compile Include="Managers\GeneticManager.cs" />
+    <Compile Include="Model\IXmlable.cs" />
     <Compile Include="Model\ObjectCreator.cs" />
     <Compile Include="UI\Form1.cs">
       <SubType>Form</SubType>
