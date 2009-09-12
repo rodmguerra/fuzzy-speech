@@ -20,7 +20,9 @@ namespace FuzzySpeech.Model
 
         public override object Clone()
         {
-            return new FuzzyLength(Name, StartPoint, FirstMaximum, LastMaximum, EndPoint);
+            FuzzyLength length = new FuzzyLength(Name, StartPoint, FirstMaximum, LastMaximum, EndPoint);
+            length.MutationStep = this.MutationStep;
+            return length;
         }
 
 
