@@ -11,6 +11,8 @@ namespace FuzzySpeech.Action
 {
     class GeneticTrainer
     {
+        private bool isGenePoolSorted = false;
+
         private Dictionary<AudioSample, string> samplePhonemeDictionary = new Dictionary<AudioSample, string>();
 
         public Dictionary<AudioSample, string> SamplePhonemeDictionary
@@ -35,7 +37,7 @@ namespace FuzzySpeech.Action
             set { settings = value; }
         }
 
-        private SortedList<double, RecognizerGenome> genePool = new SortedList<double,RecognizerGenome>();
+        private List<KeyValuePair<RecognizerGenome, double>> genePool = new List<KeyValuePair<RecognizerGenome, double>>();
 
         Recognizer recognizer = new Recognizer();
 
@@ -60,7 +62,7 @@ namespace FuzzySpeech.Action
                 //Add a mutated copy of all original genomes to the genepool
                 for (int i = 0; i < numberOfGenomes; i++)
                 {
-                    RecognizerGenome genome = genePool.Values[i].Mutate();
+                    RecognizerGenome genome = genePool[i].Key.Mutate();
                     this.AddToGenePool(genome);
                 }
 
@@ -71,19 +73,17 @@ namespace FuzzySpeech.Action
                     RecognizerGenome genome;
                     
                     //Crossover 1
-                    genome = genePool.Values[matesList[i]].CrossOver(genePool.Values[matesList[i + 1]]);
+                    genome = genePool[matesList[i]].Key.CrossOver(genePool[matesList[i + 1]].Key);
                     this.AddToGenePool(genome);
 
                     //Crossover 2
-                    genome = genePool.Values[matesList[i]].CrossOver(genePool.Values[matesList[i + 1]]);
+                    genome = genePool[matesList[i]].Key.CrossOver(genePool[matesList[i + 1]].Key);
                     this.AddToGenePool(genome);
                 }
 
                 //Throw out the worst 2/3 of the genomes
-                for (int i = 0; i < genePool.Count - numberOfGenomes; i++)
-                {
-                    genePool.RemoveAt(0);
-                }
+                SortGenePool();
+                genePool.RemoveRange(genePool.Count - (genePool.Count*2 / 3), genePool.Count*2 / 3);
             }
                 
             return this.BestGenePoolGenome();                
@@ -93,24 +93,27 @@ namespace FuzzySpeech.Action
         {
             double fitness = this.Fitness(genome);
 
-            //Slightly modify the fitness if necessary, in order to produce a new key
-            while (genePool.ContainsKey(fitness))
-            {
-                fitness -= double.MinValue;
-            }
-
             //Add to the gene pool
-            genePool.Add(fitness,genome);
+            genePool.Add(new KeyValuePair<RecognizerGenome,double>(genome, fitness));
+            isGenePoolSorted = false;
         }
 
         private RecognizerGenome BestGenePoolGenome()
         {
-            return genePool.Values[genePool.Count - 1];
+            if (!isGenePoolSorted) SortGenePool();
+            return genePool[0].Key;
+        }
+
+        private void SortGenePool()
+        {
+            genePool = genePool.OrderByDescending(p => p.Value).ToList();
+            isGenePoolSorted = true;
         }
 
         private double BestGenePoolFitness()
         {
-            return genePool.Keys[genePool.Count - 1];
+            if (!isGenePoolSorted) SortGenePool();
+            return genePool[0].Value;
         }
 
         public string CorrectPhonemeName(AudioSample sample)
