@@ -53,7 +53,7 @@ namespace FuzzySpeech.Action
             int numberOfGenomes = 100;
             for (int i = 0; i < numberOfGenomes; i++)
             {
-                RecognizerGenome genome = ObjectCreator.Instance.CreateRandomGenome(settings, samplePhonemeDictionary.Values.ToList());
+                RecognizerGenome genome = ObjectCreator.Instance.CreateRandomGenome(settings, samplePhonemeDictionary.Values.Distinct().ToList());
                 this.AddToGenePool(genome);               
             }
 

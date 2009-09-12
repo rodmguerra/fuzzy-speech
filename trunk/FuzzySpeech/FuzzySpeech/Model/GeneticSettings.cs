@@ -14,7 +14,12 @@ namespace FuzzySpeech.Model
         public double LengthMutationStep
         {
             get { return lengthMutationStep; }
-            set { lengthMutationStep = value; }
+            set { lengthMutationStep = value;
+                foreach (FuzzyLength length in initialLengths)
+                {
+                    length.MutationStep = LengthMutationStep;
+                }
+            }
         }
         private double colorMutationStep;
        
@@ -35,7 +40,12 @@ namespace FuzzySpeech.Model
         public double ColorMutationStep
         {
             get { return colorMutationStep; }
-            set { colorMutationStep = value; }
+            set { colorMutationStep = value;
+                foreach (FuzzyColor color in initialColors)
+                {
+                    color.MutationStep = ColorMutationStep;
+                }
+            }
         }
 
         private int numberOfColors;
@@ -46,6 +56,11 @@ namespace FuzzySpeech.Model
         {
             initialColors.Clear();
             initialColors.AddRange(colors);
+
+            foreach (FuzzyColor color in colors)
+            {
+                color.MutationStep = ColorMutationStep;
+            }
         }
 
         public List<FuzzyColor> GetInitialColorsCopy ()
@@ -66,6 +81,11 @@ namespace FuzzySpeech.Model
         {
             initialLengths.Clear();
             initialLengths.AddRange(lengths);
+
+            foreach (FuzzyLength length in lengths)
+            {
+                length.MutationStep = LengthMutationStep;
+            }
         }
 
         public List<FuzzyLength> GetInitialLengthsCopy()

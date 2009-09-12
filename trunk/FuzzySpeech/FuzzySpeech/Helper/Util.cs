@@ -259,7 +259,16 @@ namespace FuzzySpeech.Helper
         {
             List<int> list = new List<int>();
             for (int i = 0; i < count; i++)
-                list.Add(Random.Next(maxValue));
+            {
+                int value = Random.Next(maxValue);
+                while(list.Contains(value))
+                {
+                    value = Random.Next(maxValue);
+                }
+
+                list.Add(value);
+
+            }
 
             return list;
 

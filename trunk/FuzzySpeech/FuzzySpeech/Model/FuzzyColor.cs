@@ -21,7 +21,9 @@ namespace FuzzySpeech.Model
 
         public override object Clone()
         {
-            return new FuzzyColor(Name, StartPoint, FirstMaximum, LastMaximum, EndPoint);
+            FuzzyColor color = new FuzzyColor(Name, StartPoint, FirstMaximum, LastMaximum, EndPoint);
+            color.MutationStep = this.MutationStep;
+            return color;
         }
 
     }
