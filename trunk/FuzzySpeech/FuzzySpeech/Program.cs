@@ -130,7 +130,10 @@ namespace FuzzySpeech
             // close the stream
             tw.Close();
 
+            /*
             Recognizer recognizer = new Action.Recognizer(son);
+
+            
             AudioSample sample = new AudioSample(settings.NumberOfBands);
             for (int i = 0; i < 50; i++)
             {
@@ -143,6 +146,54 @@ namespace FuzzySpeech
             }
 
             Dictionary<Phoneme,double> dictionary = recognizer.PhonemeProbabilitiesDictionary(sample);
+            List<Phoneme> list = recognizer.ProbablePhonemes(sample);
+            */
+
+            //Testando o trainer
+            GeneticTrainer trainer = new GeneticTrainer();
+            trainer.FitnessThreshold = 0.99;
+            trainer.Settings = SettingsFactory.InstantiateHalavatiGeneticSettings();
+            Dictionary<AudioSample,string> spDic = new Dictionary<AudioSample,string>();
+            //Cria um sample dictionary (64 * 3 samples)
+            for (int count = 0; count < 64; count++)
+            {
+                AudioSample sample = new AudioSample(trainer.Settings.NumberOfBands);
+                AudioSample sample2 = new AudioSample(trainer.Settings.NumberOfBands);
+                AudioSample sample3 = new AudioSample(trainer.Settings.NumberOfBands);
+
+                int maxFrames = 100;
+                int currentMaxFrames = (int)((double)maxFrames * Helper.Util.Random.NextDouble());
+                for (int i = 0; i < currentMaxFrames; i++)
+                {
+                    AudioFrame frame = new AudioFrame(trainer.Settings.NumberOfBands);
+                    AudioFrame frame2 = new AudioFrame(trainer.Settings.NumberOfBands);
+                    AudioFrame frame3 = new AudioFrame(trainer.Settings.NumberOfBands);
+                    for (int j = 0; j < frame.NumberOfBands; j++)
+                    {
+                        frame[j] = Helper.Util.Random.NextDouble();
+                        //altera em até 5% pra cima
+                        frame2[j] = frame[j] += Helper.Util.Random.NextDouble()/20;
+
+                        //altera em até 5% pra baixo
+                        frame3[j] = frame[j] -= Helper.Util.Random.NextDouble()/20;
+                    }
+                    sample.Frames.Add(frame);
+                    sample2.Frames.Add(frame2);
+                    sample3.Frames.Add(frame3);
+
+                    
+                    
+                }
+
+                spDic.Add(sample, "p" + count);
+                spDic.Add(sample2, "p" + count);
+                spDic.Add(sample3, "p" + count);
+                
+            }
+
+            trainer.SamplePhonemeDictionary = spDic;
+            RecognizerGenome trainedGenome = trainer.Train();
+            int kakka = 0;
         }
     }
 }
