@@ -8,9 +8,9 @@ namespace FuzzySpeech.Helper
 {
     class SettingsFactory
     {
-        private static readonly double HalavatiColorMutationStep = 0.01;
+        private static readonly double HalavatiColorMutationStep = 0.1;
         private static readonly double HalavatiLengthMutationStep = 1;
-        private static readonly int HalavatiColorsByBand = 3;
+        private static readonly int HalavatiColorsByBand = 2;
         private static readonly int HalavatiNumberOfBands = 25;
 
         private static readonly FuzzyColor[] HalavatiColors = new FuzzyColor[] 
