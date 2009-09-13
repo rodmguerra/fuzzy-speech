@@ -129,7 +129,7 @@ namespace FuzzySpeech.Model
             RecognizerGenome son = (RecognizerGenome) this.Clone();
             int fromMother;
 
-            //Randomly chooses which colors will com from mother
+            //Randomly chooses which colors will come from mother
             for (int i = 0; i < son.Colors.Count; i++)
             {
                 fromMother = Util.Random.Next(2);
@@ -139,7 +139,7 @@ namespace FuzzySpeech.Model
                 }
             }
 
-            //Randomly chooses which lengths will com from mother
+            //Randomly chooses which lengths will come from mother
             for (int i = 0; i < son.Lengths.Count; i++)
             {
                 fromMother = Util.Random.Next(2);
@@ -149,7 +149,7 @@ namespace FuzzySpeech.Model
                 }
             }
 
-            //Randomly chooses which phonemes will com from mother (other)
+            //Randomly chooses which phonemes will come from mother (other)
             for (int i = 0; i < son.Phonemes.Count; i++)
             {
                 fromMother = Util.Random.Next(2);
