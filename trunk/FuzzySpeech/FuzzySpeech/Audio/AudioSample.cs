@@ -28,8 +28,27 @@ namespace FuzzySpeech.Audio
             frames = new AudioFrameCollection(this);
         }
 
+        private AmplitudeType amplitudeType = AmplitudeType.Decibel;
 
+        public AmplitudeType AmplitudeType
+        {
+            get { return amplitudeType; }
+            set { amplitudeType = value; }
+        }
 
+        private int sampleRate;
 
+        public int SampleRate
+        {
+            get { return sampleRate; }
+            set { sampleRate = value; }
+        }
+
+    }
+
+    public enum AmplitudeType
+    {
+        Decibel,
+        Magnitude
     }
 }

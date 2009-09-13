@@ -7,92 +7,7 @@ namespace FuzzySpeech.Helper
 {
     class Util
     {
-        /// <summary>
-        /// Mel Scales an array of amplitudes indexed by frequency.
-        /// </summary>
-        /// <param name="amplitudesByFrequency">
-        /// The amplitude values for each frequency.
-        /// </param>
-        /// <param name="maximumFrequency">
-        /// The top frequency represented in amplitude values array.
-        /// </param>
-        /// <returns>
-        /// The mel scaled array.
-        /// </returns>
-        public static double[] MelScale(double[] amplitudesByFrequency, double maximumFrequency)
-        {
-            //Creates a vector containing amplitudes in mel scale
-            double[] amplitudesByMel = new double[amplitudesByFrequency.Length];
-            
-            double maximumMels = GetMelsFromFrequency(maximumFrequency);
-            
-            //The step in frequency or mel from one amplitude to another
-            double frequencyGridSize = maximumFrequency / amplitudesByFrequency.Length;
-            double melGridSize = maximumMels / amplitudesByMel.Length;
-
-            double melGridBottom = 0;
-            double melGridTop = melGridSize;
-            int topFrequencyIndex;
-            int bottomFrequencyIndex = 0;
-            for (int i = 0; i < amplitudesByFrequency.Length; i++)
-            {
-                //Discover the maximum frequency containing the amplitudes to be averaged
-                double bottomFrequency = GetFrequencyFromMels(melGridBottom);
-                double topFrequencyGrid = GetFrequencyFromMels(melGridTop);
-
-                bottomFrequencyIndex = (int) (GetFrequencyFromMels(melGridBottom) / frequencyGridSize);
-                topFrequencyIndex =  (int) Math.Round(GetFrequencyFromMels(melGridTop) / frequencyGridSize)-1;
-
-                //if no range was selected, selects the inferior index as the range
-                if (topFrequencyIndex < bottomFrequencyIndex)
-                {
-                    topFrequencyIndex = bottomFrequencyIndex;
-                }
-
-                //Averages the selected amplitudes
-                for(int j=bottomFrequencyIndex; j<=topFrequencyIndex; j++)
-                {
-                    amplitudesByMel[i] += amplitudesByFrequency[j];
-                }
-                amplitudesByMel[i] /= ((topFrequencyIndex-bottomFrequencyIndex)+1);
-                
-                //Goes to the next mel grid
-                melGridBottom += melGridSize;
-                melGridTop += melGridSize;
-            }
-
-            return amplitudesByMel;
-            
-        }
-
-        /// <summary>
-        /// Gets the correspondent frequency in mel scale from a hertz scaled frequency. 
-        /// </summary>
-        /// <param name="frequency">
-        /// The frequency in hertz.
-        /// </param>
-        /// <returns>
-        /// The correspondent frequency in mels.
-        /// </returns>
-        public static double GetMelsFromFrequency(double frequency)
-        {
-            return 1127.01048 * Math.Log(1 + frequency / 700);
-            //return (1000 / Math.Log10(2)) * Math.Log10(1 + frequency / 1000); //fant
-        }
         
-        /// <summary>
-        /// Gets the correspondent frequency in herz scale from a mel scaled frequency.
-        /// </summary>
-        /// <param name="mel">
-        /// The freuency in mels.
-        /// </param>
-        /// <returns>
-        /// The correspondent frequency in herz.
-        /// </returns>
-        public static double GetFrequencyFromMels(double mel)
-        {
-            return 700 * (Math.Exp(mel / 1127.01048) - 1);  
-        }
 
         /// <summary>
         /// Creates a new array from a portion of a given double array.
@@ -186,6 +101,23 @@ namespace FuzzySpeech.Helper
 
             return average;
         }
+
+
+        public static int BitReverse(int j, int nu)
+        {
+            int j2;
+            int j1 = j;
+            int k = 0;
+            for (int i = 1; i <= nu; i++)
+            {
+                j2 = j1 / 2;
+                k = 2 * k + j1 - 2 * j2;
+                j1 = j2;
+            }
+            return k;
+        }
+
+        
 
 
         /// <summary>

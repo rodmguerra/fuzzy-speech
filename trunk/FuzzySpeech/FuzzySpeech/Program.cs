@@ -212,7 +212,7 @@ namespace FuzzySpeech
                     
                 }
 
-                spDic.Add(sample, "p" + count);
+                spDic.Add(sample , "p" + count);
                 spDic.Add(sample2, "p" + count);
                 spDic.Add(sample3, "p" + count);
                 
