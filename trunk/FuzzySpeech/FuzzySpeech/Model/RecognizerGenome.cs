@@ -289,8 +289,10 @@ namespace FuzzySpeech.Model
                     XmlElement bandElement = bandNode as XmlElement;
                     PhonemeBand band = new PhonemeBand(colorsByBand);
                     phoneme.Bands.Add(band);
+                    
+                    XmlElement bandColorsElement = bandElement.GetElementsByTagName("BandColors")[0] as XmlElement;
+                    XmlNodeList bandColorNodes = bandColorsElement.GetElementsByTagName("BandColor");
 
-                    XmlNodeList bandColorNodes = bandElement.GetElementsByTagName("BandColor");
                     int i=0;
                     foreach( XmlNode bandColorNode in bandColorNodes)
                     {
@@ -403,7 +405,7 @@ namespace FuzzySpeech.Model
                     for (int bandColorIndex = 0; bandColorIndex < band.NumberOfColors; bandColorIndex++)
                     {
                         XmlElement bandColorElement = document.CreateElement("BandColor");
-                        bandElement.AppendChild(bandColorElement);
+                        bandColorsElement.AppendChild(bandColorElement);
 
                         //bandColorElement.SetAttribute("index", bandColorIndex.ToString());
                         bandColorElement.SetAttribute("name", band.GetColor(bandColorIndex).Name);
