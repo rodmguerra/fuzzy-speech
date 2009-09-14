@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace FuzzySpeech.FeatureExtractor
+namespace FuzzySpeech.Extractor
 {
     public enum WaveFormats
     {

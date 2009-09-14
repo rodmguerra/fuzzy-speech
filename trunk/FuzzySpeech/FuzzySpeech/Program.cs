@@ -175,6 +175,10 @@ namespace FuzzySpeech
                 xmlWriter.WriteProcessingInstruction("xml", "version='1.0' encoding='UTF-8'");
                 son2.ToXml().WriteContentTo(xmlWriter);
             }
+
+            //Testando o extrator
+            Extractor.FeatureExtractor extractor = new Extractor.FeatureExtractor();
+            AudioSample amostra = extractor.Extract(Extractor.ExtractorManager.Instance.ReadAudioSampleFromFile(@"D:\Documents and Settings\Rodrigo M Guerra\Desktop\waves\aaa.wav"));
             
             //Testando o trainer
             GeneticTrainer trainer = new GeneticTrainer();

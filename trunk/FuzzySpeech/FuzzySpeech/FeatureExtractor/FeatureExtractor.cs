@@ -5,7 +5,7 @@ using System.Text;
 using System.IO;
 using FuzzySpeech.Audio;
 
-namespace FuzzySpeech.FeatureExtractor
+namespace FuzzySpeech.Extractor
 {
     class FeatureExtractor
     {

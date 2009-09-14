@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
 
-namespace FuzzySpeech.FeatureExtractor
+namespace FuzzySpeech.Extractor
 {
-    public class WaveStream : Stream, IDisposable
+    public class WaveStream : MemoryStream, IDisposable
     {
         private Stream m_Stream;
         private long m_DataPos;
@@ -295,9 +295,5 @@ namespace FuzzySpeech.FeatureExtractor
             return read;
         }
 
-        public override void Write(byte[] buf, int ofs, int count)
-        {
-            throw new InvalidOperationException();
-        }
     }
 }

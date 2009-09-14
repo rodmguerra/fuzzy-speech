@@ -5,7 +5,7 @@ using System.Text;
 using FuzzySpeech.Audio;
 using System.IO;
 
-namespace FuzzySpeech.FeatureExtractor
+namespace FuzzySpeech.Extractor
 {
     class ExtractorManager
     {
@@ -26,7 +26,7 @@ namespace FuzzySpeech.FeatureExtractor
 
         public void GetSignalChannelsFromWaveData16bits(byte[] waveData, out double[] monoChannelSignal)
         {
-            monoChannelSignal = new double[waveData.Length / 4];
+            monoChannelSignal = new double[waveData.Length / 2];
 
             // Split out channels from sample
             int channelIndex = 0;
