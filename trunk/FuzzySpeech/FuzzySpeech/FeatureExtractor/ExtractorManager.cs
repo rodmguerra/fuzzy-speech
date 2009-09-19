@@ -9,10 +9,10 @@ namespace FuzzySpeech.Extractor
 {
     class ExtractorManager
     {
-        public void GetSignalChannelsFromWaveData16bits(byte[] waveData, out double[] leftChannelSignal, out double[] rightChannelSignal)
+        public void GetSignalChannelsFromWaveData16bits(byte[] waveData, out AudioSignal leftChannelSignal, out AudioSignal rightChannelSignal)
         {
-            leftChannelSignal = new double[waveData.Length / 4];
-            rightChannelSignal = new double[waveData.Length / 4];
+            leftChannelSignal = new AudioSignal(waveData.Length / 4);
+            rightChannelSignal = new AudioSignal(waveData.Length / 4);
 
             // Split out channels from sample
             int channelIndex = 0;
@@ -24,9 +24,9 @@ namespace FuzzySpeech.Extractor
             }
         }
 
-        public void GetSignalChannelsFromWaveData16bits(byte[] waveData, out double[] monoChannelSignal)
+        public void GetSignalChannelsFromWaveData16bits(byte[] waveData, out AudioSignal monoChannelSignal)
         {
-            monoChannelSignal = new double[waveData.Length / 2];
+            monoChannelSignal = new AudioSignal(waveData.Length / 2);
 
             // Split out channels from sample
             int channelIndex = 0;
@@ -37,39 +37,40 @@ namespace FuzzySpeech.Extractor
             }
         }
 
-        public double[] GetMonoSignalFromStereoSignal(double[] leftChannelSignal, double[] rightChannelSignal)
+        public AudioSignal GetMonoSignalFromStereoSignal(AudioSignal leftChannelSignal, AudioSignal rightChannelSignal)
         {
             //Averages the two samples and get a mono signal
-            double[] monoChannelSignal = new double[leftChannelSignal.Length];
-            for (int i = 0; i < monoChannelSignal.Length; i++)
+            AudioSignal monoChannelSignal = new AudioSignal(leftChannelSignal.FrameCount);
+            for (int i = 0; i < monoChannelSignal.FrameCount; i++)
                 monoChannelSignal[i] = (leftChannelSignal[i] + rightChannelSignal[i]);
 
             return monoChannelSignal;
         }
 
-        public AudioSample GetSpectrogramFromChannelSignal(double[] channelSignal, int fftSize, int sampleRate)
+        public AudioSample GetSpectrogramFromChannelSignal(AudioSignal channelSignal, int fftSize, int sampleRate)
         {
-            AudioSample spectrogram = new AudioSample(fftSize/2);
+            AudioSample spectrogram = new AudioSample(channelSignal.FrameCount/2);
             spectrogram.SampleRate = sampleRate;
 
-            for (int i = 0; i < channelSignal.Length; i += fftSize)
+            for (int i = 0; i < channelSignal.FrameCount; i += fftSize)
             {
-                double[] range = channelSignal.ToList().GetRange(i * fftSize, fftSize).ToArray();
-                AudioFrame frameFFT = this.FFT(ref channelSignal, AmplitudeType.Decibel);
+                int length = i + fftSize > channelSignal.FrameCount ? channelSignal.FrameCount - i: fftSize;
+                AudioSignal range = channelSignal.GetFrameRange(i, length);
+                AudioFrame frameFFT = this.FFT(channelSignal, AmplitudeType.Decibel);
                 spectrogram.Frames.Add(frameFFT);
             }
 
             return spectrogram;
         }
 
-        public double[] GetSignalFromStream(WaveStream waveStream, bool stereo)
+        public AudioSignal GetSignalFromStream(WaveStream waveStream, bool stereo)
         {
-            double[] signal;
+            AudioSignal signal;
 
             if (!stereo)
             {
                 byte[] waveData = new byte[waveStream.Length];
-                waveStream.Write(waveData, 0, waveData.Length);
+                waveStream.Read(waveData, 0, waveData.Length);
 
                 GetSignalChannelsFromWaveData16bits(waveData, out signal);
             }
@@ -78,8 +79,8 @@ namespace FuzzySpeech.Extractor
                 byte[] waveData = new byte[waveStream.Length];
                 waveStream.Write(waveData, 0, waveData.Length);
 
-                double[] leftChannel;
-                double[] rightChannel;
+                AudioSignal leftChannel;
+                AudioSignal rightChannel;
 
                 GetSignalChannelsFromWaveData16bits(waveData, out leftChannel, out rightChannel);
                 signal = GetMonoSignalFromStereoSignal(leftChannel, rightChannel);
@@ -189,12 +190,16 @@ namespace FuzzySpeech.Extractor
 
 
 
-        public AudioFrame FFT(ref double[] x, AmplitudeType amplitudeType)
+        public AudioFrame FFT(AudioSignal audioSignal, AmplitudeType amplitudeType)
         {
+
+            AudioSignal x = audioSignal;
+
             // Assume n is a power of 2
-            int n = x.Length;
+            int n = x.FrameCount;
             int nu = (int)(Math.Log(n) / Math.Log(2));
             int n2 = n / 2;
+            AudioFrame frequencyDomainFrame = new AudioFrame(n2);
             int nu1 = nu - 1;
             double[] xre = new double[n];
             double[] xim = new double[n];
@@ -247,7 +252,7 @@ namespace FuzzySpeech.Extractor
                 k++;
             }
 
-            AudioFrame frequencyDomainFrame = new AudioFrame(n2);
+            
 
             for (int i = 0; i < n / 2; i++)
             {
@@ -284,12 +289,19 @@ namespace FuzzySpeech.Extractor
 
             using (FileStream fileStream = new FileStream(inputWaveFilePath, FileMode.Open, FileAccess.Read))
             {
-                Stream stream = WaveStream.CreateMemoryStreamFromFileStream(fileStream);
-                sampleStream = new WaveStream(stream);
+                byte[] data = new byte[fileStream.Length];
+                fileStream.Read(data,0,data.Length);
+                fileStream.Flush();
+                fileStream.Close();
+
+                MemoryStream memoryStream = new MemoryStream(data);
+                //WaveStream waveStream = new WaveStream(memoryStream);
+                //sampleStream.CreateMemoryStreamFromFileStream(fileStream);
+                sampleStream = new WaveStream(memoryStream);
             }
 
 
-            double[] signal = ExtractorManager.Instance.GetSignalFromStream(sampleStream, sampleStream.Format.nChannels == 2);
+            AudioSignal signal = ExtractorManager.Instance.GetSignalFromStream(sampleStream, sampleStream.Format.nChannels == 2);
             return ExtractorManager.Instance.GetSpectrogramFromChannelSignal(signal, 256, sampleStream.Format.nSamplesPerSec);
         }
     }

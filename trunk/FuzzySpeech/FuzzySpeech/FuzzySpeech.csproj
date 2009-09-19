@@ -53,6 +53,7 @@
     <Compile Include="Audio\AudioFrame.cs" />
     <Compile Include="Audio\AudioSample.cs" />
     <Compile Include="Audio\Collections\AudioFrameCollection.cs" />
+    <Compile Include="Audio\AudioSignal.cs" />
     <Compile Include="FeatureExtractor\ExtractorManager.cs" />
     <Compile Include="FeatureExtractor\FeatureExtractor.cs" />
     <Compile Include="FeatureExtractor\WaveFormat.cs" />
