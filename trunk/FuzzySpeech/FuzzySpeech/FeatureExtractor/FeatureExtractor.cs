@@ -11,6 +11,7 @@ namespace FuzzySpeech.Extractor
     {
         int bandCount = 25;
         double reductionMaxPercent = 0.1;
+        AmplitudeType amplitudeType = AmplitudeType.Magnitude;
 
         public AudioSample Extract(AudioSample sample)
         {

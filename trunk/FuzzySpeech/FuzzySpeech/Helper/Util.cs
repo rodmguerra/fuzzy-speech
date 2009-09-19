@@ -184,6 +184,7 @@ namespace FuzzySpeech.Helper
         public static double MaxNPercent(IEnumerable<double> values, double nPercent)
         {
             int nValues = (int) (values.Count() * nPercent);
+            if (nValues == 0) nValues++; //if percentage is tends to zero, uses max operator instead
             return MaxN(values, nValues);
         }
 

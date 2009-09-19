@@ -152,7 +152,7 @@ namespace FuzzySpeech.Extractor
             Position = 0;
         }
         
-        
+        /*
         public static MemoryStream CreateMemoryStreamFromFileStream(FileStream fileStream)
         {
             WaveStream waveData = new WaveStream(fileStream);
@@ -187,6 +187,7 @@ namespace FuzzySpeech.Extractor
             writer.Seek(0, SeekOrigin.Begin);
             return stream;
         }
+         */
         
 
         public WaveStream(Stream sourceStream, Stream destinationStream)
@@ -243,10 +244,12 @@ namespace FuzzySpeech.Extractor
         }
         public override void Close()
         {
-            Dispose();
+            //Dispose();
+            m_Stream.Dispose();
         }
         public override void Flush()
         {
+            m_Stream.Flush();
         }
         public override void SetLength(long len)
         {

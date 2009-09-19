@@ -178,7 +178,7 @@ namespace FuzzySpeech
 
             //Testando o extrator
             Extractor.FeatureExtractor extractor = new Extractor.FeatureExtractor();
-            AudioSample amostra = extractor.Extract(Extractor.ExtractorManager.Instance.ReadAudioSampleFromFile(@"D:\Documents and Settings\Rodrigo M Guerra\Desktop\waves\aaa.wav"));
+            AudioSample amostra = extractor.Extract(Extractor.ExtractorManager.Instance.ReadAudioSampleFromFile(@"D:\Documents and Settings\Rodrigo M Guerra\Desktop\waves\a_a_a.wav",AmplitudeType.Magnitude));
             
             //Testando o trainer
             GeneticTrainer trainer = new GeneticTrainer();

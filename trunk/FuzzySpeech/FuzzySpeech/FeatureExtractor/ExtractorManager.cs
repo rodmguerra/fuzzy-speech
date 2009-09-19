@@ -47,24 +47,27 @@ namespace FuzzySpeech.Extractor
             return monoChannelSignal;
         }
 
-        public AudioSample GetSpectrogramFromChannelSignal(AudioSignal channelSignal, int fftSize, int sampleRate)
+        public AudioSample GetSpectrogramFromChannelSignal(AudioSignal channelSignal, int fftSize, int sampleRate, AmplitudeType amplitudeType)
         {
-            AudioSample spectrogram = new AudioSample(channelSignal.FrameCount/2);
+            AudioSample spectrogram = new AudioSample(fftSize/2);
             spectrogram.SampleRate = sampleRate;
+            spectrogram.AmplitudeType = amplitudeType;
 
             for (int i = 0; i < channelSignal.FrameCount; i += fftSize)
             {
                 int length = i + fftSize > channelSignal.FrameCount ? channelSignal.FrameCount - i: fftSize;
                 AudioSignal range = channelSignal.GetFrameRange(i, length);
-                AudioFrame frameFFT = this.FFT(channelSignal, AmplitudeType.Decibel);
+                AudioFrame frameFFT = this.FFT(range, amplitudeType);
                 spectrogram.Frames.Add(frameFFT);
             }
 
             return spectrogram;
         }
 
-        public AudioSignal GetSignalFromStream(WaveStream waveStream, bool stereo)
+        public AudioSignal GetSignalFromStream(WaveStream waveStream)
         {
+            bool stereo = waveStream.Format.nChannels == 2;
+
             AudioSignal signal;
 
             if (!stereo)
@@ -144,15 +147,23 @@ namespace FuzzySpeech.Extractor
 
             double melGridBottom = 0;
             double melGridTop = melGridSize;
-            int topFrequencyIndex;
-            int bottomFrequencyIndex = 0;
+            //int topFrequencyIndex;
+            //int bottomFrequencyIndex = 0;
             for (int i = 0; i < frame.NumberOfBands; i++)
             {
+                if (i == 127)
+                    i = 127;
                 //Discover the maximum frequency containing the amplitudes to be averaged
                 double bottomFrequency = GetFrequencyFromMels(melGridBottom);
-                double topFrequencyGrid = GetFrequencyFromMels(melGridTop);
+                double topFrequency = GetFrequencyFromMels(melGridTop);
+                double frequencyRange = topFrequency - bottomFrequency;
 
-                bottomFrequencyIndex = (int)(GetFrequencyFromMels(melGridBottom) / frequencyGridSize);
+                int bottomFrequencyIndex = (int)(bottomFrequency / frequencyGridSize);
+                int frequencyIndexRange = (int)(frequencyRange / frequencyGridSize);
+                int topFrequencyIndex = bottomFrequencyIndex + frequencyIndexRange;
+                
+                /*
+                
                 topFrequencyIndex = (int)Math.Round(GetFrequencyFromMels(melGridTop) / frequencyGridSize) - 1;
 
                 //if no range was selected, selects the inferior index as the range
@@ -160,6 +171,8 @@ namespace FuzzySpeech.Extractor
                 {
                     topFrequencyIndex = bottomFrequencyIndex;
                 }
+                 * 
+                 */
 
                 //Averages the selected amplitudes
                 for (int j = bottomFrequencyIndex; j <= topFrequencyIndex; j++)
@@ -215,8 +228,10 @@ namespace FuzzySpeech.Extractor
             {
                 while (k < n)
                 {
+                    int index = k + n2 < xre.Length ? k + n2 : xre.Length - 1;
                     for (int i = 1; i <= n2; i++)
                     {
+                        /*
                         p = Helper.Util.BitReverse(k >> nu1, nu);
                         arg = 2 * (double)Math.PI * p / n;
                         c = (double)Math.Cos(arg);
@@ -225,6 +240,20 @@ namespace FuzzySpeech.Extractor
                         ti = xim[k + n2] * c - xre[k + n2] * s;
                         xre[k + n2] = xre[k] - tr;
                         xim[k + n2] = xim[k] - ti;
+                        xre[k] += tr;
+                        xim[k] += ti;
+                        k++;
+                         */
+
+
+                        p = Helper.Util.BitReverse(k >> nu1, nu);
+                        arg = 2 * (double)Math.PI * p / n;
+                        c = (double)Math.Cos(arg);
+                        s = (double)Math.Sin(arg);
+                        tr = xre[index] * c + xim[index] * s;
+                        ti = xim[index] * c - xre[index] * s;
+                        xre[index] = xre[k] - tr;
+                        xim[index] = xim[k] - ti;
                         xre[k] += tr;
                         xim[k] += ti;
                         k++;
@@ -280,12 +309,15 @@ namespace FuzzySpeech.Extractor
             }
 
             melScaledSpectrogram.SampleRate = sample.SampleRate;
+            melScaledSpectrogram.AmplitudeType = sample.AmplitudeType;
             return melScaledSpectrogram;
         }
 
-        public AudioSample ReadAudioSampleFromFile(string inputWaveFilePath)
+        public AudioSample ReadAudioSampleFromFile(string inputWaveFilePath, AmplitudeType amplitudeType)
         {
-            WaveStream sampleStream;
+            AudioSignal signal;
+
+            int samplesPerSecond = 0;
 
             using (FileStream fileStream = new FileStream(inputWaveFilePath, FileMode.Open, FileAccess.Read))
             {
@@ -297,12 +329,18 @@ namespace FuzzySpeech.Extractor
                 MemoryStream memoryStream = new MemoryStream(data);
                 //WaveStream waveStream = new WaveStream(memoryStream);
                 //sampleStream.CreateMemoryStreamFromFileStream(fileStream);
-                sampleStream = new WaveStream(memoryStream);
+
+                using (WaveStream waveStream = new WaveStream(memoryStream))
+                {
+                    samplesPerSecond = waveStream.Format.nSamplesPerSec;
+                    signal = ExtractorManager.Instance.GetSignalFromStream(waveStream);
+                    waveStream.Flush();
+                    waveStream.Close();
+                }
             }
 
-
-            AudioSignal signal = ExtractorManager.Instance.GetSignalFromStream(sampleStream, sampleStream.Format.nChannels == 2);
-            return ExtractorManager.Instance.GetSpectrogramFromChannelSignal(signal, 256, sampleStream.Format.nSamplesPerSec);
+            
+            return ExtractorManager.Instance.GetSpectrogramFromChannelSignal(signal, 256, samplesPerSecond, amplitudeType);
         }
 
         public AudioSample Reduct (AudioSample sample, int reductedBandCount, double nPercentMaxValues)
