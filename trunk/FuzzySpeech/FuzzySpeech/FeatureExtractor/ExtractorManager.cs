@@ -304,5 +304,25 @@ namespace FuzzySpeech.Extractor
             AudioSignal signal = ExtractorManager.Instance.GetSignalFromStream(sampleStream, sampleStream.Format.nChannels == 2);
             return ExtractorManager.Instance.GetSpectrogramFromChannelSignal(signal, 256, sampleStream.Format.nSamplesPerSec);
         }
+
+        public AudioSample Reduct (AudioSample sample, int reductedBandCount, double nPercentMaxValues)
+        {
+            AudioSample reducted = new AudioSample(reductedBandCount);
+            
+            int bandsByRange = sample.BandsByFrame/reductedBandCount;
+
+            foreach (AudioFrame frame in sample.Frames)
+            {
+                AudioFrame reductedFrame = new AudioFrame(reductedBandCount);
+                for (int i = 0; i < reducted.BandsByFrame; i++)
+                {
+                    int rangeBandCount = ((i*bandsByRange + bandsByRange) > sample.BandsByFrame) ? sample.BandsByFrame - i*bandsByRange : bandsByRange;
+                    reductedFrame[i] = Helper.Util.MaxNPercent(frame.GetBandRange(i, rangeBandCount), nPercentMaxValues);
+                }
+                reducted.Frames.Add(reductedFrame);
+            }
+
+            return reducted;
+        }
     }
 }
