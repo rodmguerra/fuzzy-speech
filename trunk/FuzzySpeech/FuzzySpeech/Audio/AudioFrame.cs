@@ -39,6 +39,26 @@ namespace FuzzySpeech.Audio
             return data.ToList().GetRange(firstBandIndex, bandCount).ToArray();      
         }
 
+        public void DivideAmplitudesPer(double factor)
+        {
+            for (int i=0; i<data.Length; i++)
+            {
+                data[i] /= factor;
+            }
+        }
+
+        public double GetMaximumAmplitude()
+        {
+            double maximumAmplitude = Double.MinValue;
+            foreach (double bandAmplitude in data)
+            {
+                if (bandAmplitude > maximumAmplitude)
+                    maximumAmplitude = bandAmplitude;
+            }
+
+            return maximumAmplitude;
+        }
+
 
     }
 }

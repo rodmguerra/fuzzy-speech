@@ -175,11 +175,17 @@ namespace FuzzySpeech
                 xmlWriter.WriteProcessingInstruction("xml", "version='1.0' encoding='UTF-8'");
                 son2.ToXml().WriteContentTo(xmlWriter);
             }
-
+/*
             //Testando o extrator
             Extractor.FeatureExtractor extractor = new Extractor.FeatureExtractor();
-            AudioSample amostra = extractor.Extract(Extractor.ExtractorManager.Instance.ReadAudioSampleFromFile(@"D:\Documents and Settings\Rodrigo M Guerra\Desktop\waves\a_a_a.wav",AmplitudeType.Magnitude));
-            
+            AudioSample amostra = extractor.Extract(Extractor.ExtractorManager.Instance.ReadAudioSampleFromFile(@"D:\Documents and Settings\Rodrigo M Guerra\Desktop\waves\aaa.wav",AmplitudeType.Magnitude));
+            amostra.DivideAmplitudesPer(amostra.GetMaximumAmplitude());
+
+
+
+
+
+
             //Testando o trainer
             GeneticTrainer trainer = new GeneticTrainer();
             trainer.FitnessThreshold = 0.99;
@@ -222,6 +228,39 @@ namespace FuzzySpeech
                 
             }
 
+            trainer.SamplePhonemeDictionary = spDic;
+            RecognizerGenome trainedGenome = trainer.Train();
+            int kakka = 0;
+
+ */
+ 
+            //Testando o extrator
+            Extractor.FeatureExtractor extractor = new Extractor.FeatureExtractor();
+
+            DirectoryInfo directoryInfo = new DirectoryInfo(@"D:\Documents and Settings\Rodrigo M Guerra\Desktop\inputDirectory");
+            FileInfo[] filesInfo = directoryInfo.GetFiles();
+            double maximumMagnitute = Double.MinValue;
+            Dictionary<AudioSample, string> spDic = new Dictionary<AudioSample, string>();
+            foreach (FileInfo fileInfo in filesInfo)
+            {
+                AudioSample amostra = extractor.Extract(Extractor.ExtractorManager.Instance.ReadAudioSampleFromFile(fileInfo.FullName,AmplitudeType.Magnitude));
+                spDic.Add(amostra, fileInfo.Name[0].ToString());
+
+                double sampleMagnitude = amostra.GetMaximumAmplitude();
+                if (sampleMagnitude > maximumMagnitute) maximumMagnitute = sampleMagnitude;                             
+            
+            }
+
+            foreach (KeyValuePair<AudioSample, string> spPair in spDic)
+            {
+                spPair.Key.DivideAmplitudesPer(maximumMagnitute);
+            }
+
+
+            //Testando o trainer
+            GeneticTrainer trainer = new GeneticTrainer();
+            trainer.FitnessThreshold = 0.99;
+            trainer.Settings = SettingsFactory.InstantiateHalavatiGeneticSettings();
             trainer.SamplePhonemeDictionary = spDic;
             RecognizerGenome trainedGenome = trainer.Train();
             int kakka = 0;

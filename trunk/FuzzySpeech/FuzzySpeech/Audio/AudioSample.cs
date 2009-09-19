@@ -44,6 +44,28 @@ namespace FuzzySpeech.Audio
             set { sampleRate = value; }
         }
 
+
+        public void DivideAmplitudesPer (double factor)
+        {
+            foreach (AudioFrame frame in frames)
+            {
+                frame.DivideAmplitudesPer(factor);
+            }
+        }
+
+        public double GetMaximumAmplitude()
+        {
+            double maximumAmplitude = Double.MinValue;
+            foreach (AudioFrame frame in frames)
+            {
+                double frameMaximumAmplitude = frame.GetMaximumAmplitude();
+                if (frameMaximumAmplitude > maximumAmplitude)
+                    maximumAmplitude = frameMaximumAmplitude;
+            }
+
+            return maximumAmplitude;
+        }
+
     }
 
     public enum AmplitudeType

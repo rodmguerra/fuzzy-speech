@@ -55,9 +55,17 @@ namespace FuzzySpeech.Extractor
 
             for (int i = 0; i < channelSignal.FrameCount; i += fftSize)
             {
-                int length = i + fftSize > channelSignal.FrameCount ? channelSignal.FrameCount - i: fftSize;
-                AudioSignal range = channelSignal.GetFrameRange(i, length);
+                //int length = i + fftSize > channelSignal.FrameCount ? channelSignal.FrameCount - i: fftSize;
+                //AudioSignal range = channelSignal.GetFrameRange(i, length);
+
+                if (i + fftSize > channelSignal.FrameCount) break;
+                AudioSignal range = channelSignal.GetFrameRange(i, fftSize);
+                
+                
                 AudioFrame frameFFT = this.FFT(range, amplitudeType);
+
+               
+
                 spectrogram.Frames.Add(frameFFT);
             }
 
