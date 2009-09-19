@@ -317,7 +317,7 @@ namespace FuzzySpeech.Extractor
                 for (int i = 0; i < reducted.BandsByFrame; i++)
                 {
                     int rangeBandCount = ((i*bandsByRange + bandsByRange) > sample.BandsByFrame) ? sample.BandsByFrame - i*bandsByRange : bandsByRange;
-                    reductedFrame[i] = Helper.Util.MaxNPercent(frame.GetBandRange(i, rangeBandCount), nPercentMaxValues);
+                    reductedFrame[i] = Helper.Util.MaxNPercent(frame.GetBandRange(i*bandsByRange, rangeBandCount), nPercentMaxValues);
                 }
                 reducted.Frames.Add(reductedFrame);
             }
