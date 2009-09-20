@@ -51,7 +51,10 @@ namespace FuzzySpeech.Model
         public int LengthID
         {
             get { return lengthID; }
-            set { lengthID = value; }
+            set {               
+                lengthID = value; 
+            
+            }
         }
 
         /// <summary>
@@ -59,7 +62,9 @@ namespace FuzzySpeech.Model
         /// </summary>
         public FuzzyLength Length
         {
-            get { return OwnerGenome.Lengths[lengthID]; }
+            get { 
+                return OwnerGenome.Lengths[lengthID]; 
+            }
         }
 
         /// <summary>
@@ -153,7 +158,7 @@ namespace FuzzySpeech.Model
             {
                 border = 1;
             }
-            else if (LengthID == this.OwnerGenome.Lengths.Count)
+            else if (LengthID == this.OwnerGenome.Lengths.Count - 1)
             {
                 border = -1;
             }
@@ -165,6 +170,7 @@ namespace FuzzySpeech.Model
 
             //Selects the new length
             int mutatedLengthID = LengthID + border;
+            
 
             //Mutates
             Phoneme mutated = (Phoneme) Clone();
