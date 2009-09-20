@@ -55,7 +55,6 @@
     <Compile Include="FeatureExtractor\WaveFormat.cs" />
     <Compile Include="FeatureExtractor\WaveStream.cs" />
     <Compile Include="Helper\SettingsFactory.cs" />
-    <Compile Include="Managers\GeneticManager.cs" />
     <Compile Include="UI\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -100,6 +99,9 @@
       <Project>{2FFDF656-CEA0-4D82-AB75-23811A061C0A}</Project>
       <Name>FuzzySpeech.Trainer</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Managers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
