@@ -5,7 +5,7 @@ using System.Text;
 
 namespace FuzzySpeech.Model.Collections
 {
-    class RecognizerGenomePhonemeCollection : CollectionBase
+    public class RecognizerGenomePhonemeCollection : CollectionBase
     {
         private RecognizerGenome owner;
 

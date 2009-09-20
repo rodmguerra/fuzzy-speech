@@ -7,7 +7,7 @@ using FuzzySpeech.Common.Helper;
 
 namespace FuzzySpeech.Model
 {
-    class Phoneme : CommonObject
+    public class Phoneme : ICommonObject
     {
         private PhonemeBandCollection bands = null;
         private int lengthID = -1;

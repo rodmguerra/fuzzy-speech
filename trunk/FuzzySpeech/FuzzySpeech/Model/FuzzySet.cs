@@ -6,7 +6,7 @@ using FuzzySpeech.Common.Helper;
 
 namespace FuzzySpeech.Model
 {
-    abstract class FuzzySet : CommonObject, IComparable
+    public abstract class FuzzySet : ICommonObject, IComparable
     {
         private double[] points = new double[4];
 

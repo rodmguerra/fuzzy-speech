@@ -9,7 +9,7 @@ using System.Xml;
 
 namespace FuzzySpeech.Model
 {
-    class RecognizerGenome : CommonObject, IXmlable
+    public class RecognizerGenome : ICommonObject, IXmlable
     {
         private List<FuzzyColor> colors = new List<FuzzyColor>();
         private List<FuzzyLength> lengths = new List<FuzzyLength>();

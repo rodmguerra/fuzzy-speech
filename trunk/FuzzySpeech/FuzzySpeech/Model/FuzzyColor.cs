@@ -6,7 +6,7 @@ using FuzzySpeech.Common.Helper;
 
 namespace FuzzySpeech.Model
 {
-    class FuzzyColor : FuzzySet
+    public class FuzzyColor : FuzzySet
     {
         public FuzzyColor(string name, double startPoint,
             double firstMaximum,

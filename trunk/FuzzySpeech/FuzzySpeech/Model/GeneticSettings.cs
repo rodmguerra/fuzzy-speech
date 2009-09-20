@@ -5,7 +5,7 @@ using System.Text;
 
 namespace FuzzySpeech.Model
 {
-    class GeneticSettings
+    public class GeneticSettings
     {
         private int numberOfBands;
         private int colorsByBand;
@@ -47,8 +47,6 @@ namespace FuzzySpeech.Model
                 }
             }
         }
-
-        private int numberOfColors;
 
         List<FuzzyColor> initialColors = new List<FuzzyColor>();
 

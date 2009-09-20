@@ -5,7 +5,7 @@ using System.Text;
 
 namespace FuzzySpeech.Model.Collections
 {
-    class PhonemeBandCollection : CollectionBase
+    public class PhonemeBandCollection : CollectionBase
     {
         private Phoneme owner;
 

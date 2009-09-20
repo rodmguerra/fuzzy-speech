@@ -5,7 +5,7 @@ using System.Text;
 
 namespace FuzzySpeech.Model
 {
-    class FuzzyLength : FuzzySet
+    public class FuzzyLength : FuzzySet
     {
         public FuzzyLength(string name,
             double startPoint,

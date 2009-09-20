@@ -5,7 +5,7 @@ using System.Text;
 
 namespace FuzzySpeech.Model
 {
-    class ObjectCreator
+    public class ObjectCreator
     {
         public RecognizerGenome CreateRandomGenome(GeneticSettings settings, List<string> phonemeNames)
         {
