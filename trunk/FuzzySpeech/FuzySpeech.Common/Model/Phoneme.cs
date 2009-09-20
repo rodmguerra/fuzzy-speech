@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using FuzzySpeech.Model.Collections;
 using FuzzySpeech.Common.Helper;
+using FuzzySpeech.Common.Interfaces;
 
 namespace FuzzySpeech.Model
 {
