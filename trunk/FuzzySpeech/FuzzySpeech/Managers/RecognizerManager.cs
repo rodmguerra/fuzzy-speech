@@ -43,7 +43,7 @@ namespace FuzzySpeech.Managers
             }
 
             //step 2: Color compatibility aggregation
-            return Helper.Util.MaxNPercent(compatibilities, 0.1);
+            return Helper.Util.AverageNPercent(compatibilities, 0.8);
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace FuzzySpeech.Managers
         /// </returns>
         public double Similarity(Phoneme phoneme, AudioSample audioPhoneme)
         {
-            return this.LengthSimilarity(phoneme, audioPhoneme);// *this.ColorSimilarity(phoneme, audioPhoneme);
+            return this.LengthSimilarity(phoneme, audioPhoneme) * this.ColorSimilarity(phoneme, audioPhoneme);
         }
 
         public double SingleFramePatternMatch(Phoneme phoneme, AudioFrame frame)
@@ -87,7 +87,8 @@ namespace FuzzySpeech.Managers
             }
 
             //The frame match is the minimum compatibility of the bands
-            return frameMatch.Min();
+            double minOfMax = frameMatch.Min();
+            return minOfMax;
         }
 
         //Singleton
