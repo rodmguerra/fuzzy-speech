@@ -32,6 +32,8 @@ namespace FuzzySpeech.Helper
             return range;
         }
 
+
+        /*
         /// <summary>
         /// Calculates the average from the n percent greatest values of a given array.
         /// </summary>
@@ -102,7 +104,7 @@ namespace FuzzySpeech.Helper
             return average;
         }
 
-
+        */
         public static int BitReverse(int j, int nu)
         {
             int j2;
@@ -118,7 +120,7 @@ namespace FuzzySpeech.Helper
         }
 
         
-
+        /*
 
         /// <summary>
         /// Creates an array with a given number the ranges whose values are an average from its n percent greatest values.
@@ -158,6 +160,7 @@ namespace FuzzySpeech.Helper
             return averagedRanges;
         }
 
+         */
 
         public static double MaxN (IEnumerable<double> values, int nValues)
         {
@@ -165,20 +168,8 @@ namespace FuzzySpeech.Helper
             valuesList.Sort();
             valuesList.Reverse();
 
-            //Keep the N greater values
-            int removedCount = valuesList.Count - nValues;
-
-            bool last = true;
-            for (int i = 0; i < removedCount; i++)
-            {
-                if (last) valuesList.RemoveAt(valuesList.Count - 1);
-                else valuesList.RemoveAt(0);
-
-                last = !last;
-            }
-
             //Return the average of the N greater values
-            return valuesList.Average();
+            return valuesList.GetRange(0,nValues).Average();
         }
 
         public static double MaxNPercent(IEnumerable<double> values, double nPercent)
@@ -187,6 +178,28 @@ namespace FuzzySpeech.Helper
             if (nValues == 0) nValues++; //if percentage is tends to zero, uses max operator instead
             return MaxN(values, nValues);
         }
+
+
+        public static double AverageN(IEnumerable<double> values, int nValues)
+        {
+            List<double> valuesList = new List<double>(values);
+            valuesList.Sort();
+            valuesList.Reverse();
+
+            //Return the average of the N middle values
+            return valuesList.GetRange( (valuesList.Count - nValues)/2, nValues).Average();
+        }
+
+        public static double AverageNPercent(IEnumerable<double> values, double nPercent)
+        {
+            int nValues = (int)(values.Count() * nPercent);
+            if (nValues == 0) nValues++;
+            return AverageN(values, nValues);
+        }
+
+
+
+
 
         public static List<int> RandomInt32List(int maxValue, int count)
         {
