@@ -67,7 +67,7 @@ namespace FuzzySpeech.Model
             {
                 border = 1;
             }
-            else if (ColorIDs[mutatedColorIndex] == NumberOfColors)
+            else if (ColorIDs[mutatedColorIndex] == this.OwnerPhoneme.OwnerGenome.Colors.Count - 1)
             {
                 border = -1;
             }

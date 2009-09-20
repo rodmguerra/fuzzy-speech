@@ -19,8 +19,17 @@ namespace FuzzySpeech.Model
             this.Colors.AddRange(colors);
             this.Lengths.AddRange(lengths);
 
+            foreach (FuzzyColor color in colors)
+                colorNames.Add(color.Name);
+
+            foreach (FuzzyLength length in lengths)
+                lengthNames.Add(length.Name);
+
             phonemes = new RecognizerGenomePhonemeCollection(this);
         }
+
+        protected List<string> colorNames = new List<string>();
+        protected List<string> lengthNames = new List<string>();
 
         /// <summary>
         /// Genome's color definitions.
@@ -76,6 +85,28 @@ namespace FuzzySpeech.Model
             return clone;
         }
 
+        protected void SortColors ()
+        {
+            this.colors.Sort();
+
+            for (int i=0; i<colors.Count; i++)
+            {
+                colors[i].Name = colorNames[i];
+            }
+
+        }
+
+        protected void SortLengths()
+        {
+            this.lengths.Sort();
+
+            for (int i = 0; i < lengths.Count; i++)
+            {
+                lengths[i].Name = lengthNames[i];
+            }
+
+        }
+
         /// <summary>
         /// Mutation operator, creates a new genome
         /// by changing slightly the first genome
@@ -95,13 +126,13 @@ namespace FuzzySpeech.Model
                 case 0:
                     mutatedPartItemIndex = Util.Random.Next(Colors.Count);
                     mutated.Colors[mutatedPartItemIndex] = (FuzzyColor)mutated.Colors[mutatedPartItemIndex].Mutate();
-                    mutated.Colors.Sort();
+                    mutated.SortColors();
                     break;
                 //mutate a length
                 case 1:
                     mutatedPartItemIndex = Util.Random.Next(Lengths.Count);
                     mutated.Lengths[mutatedPartItemIndex] = (FuzzyLength)mutated.Lengths[mutatedPartItemIndex].Mutate();
-                    mutated.Lengths.Sort();
+                    mutated.SortLengths();
                     break;
                 //mutate a phoneme
                 case 2:
@@ -137,6 +168,8 @@ namespace FuzzySpeech.Model
                 {
                     son.Colors[i] = (FuzzyColor) mother.Colors[i].Clone();
                 }
+
+                son.Colors[i].Name = this.colorNames[i]; //father`s color name
             }
 
             //Randomly chooses which lengths will come from mother

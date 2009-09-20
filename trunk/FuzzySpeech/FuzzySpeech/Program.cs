@@ -243,7 +243,7 @@ namespace FuzzySpeech
             Dictionary<AudioSample, string> spDic = new Dictionary<AudioSample, string>();
             foreach (FileInfo fileInfo in filesInfo)
             {
-                AudioSample amostra = extractor.Extract(Extractor.ExtractorManager.Instance.ReadAudioSampleFromFile(fileInfo.FullName,AmplitudeType.Magnitude));
+                AudioSample amostra = extractor.Extract(Extractor.ExtractorManager.Instance.ReadAudioSampleFromFile(fileInfo.FullName,AmplitudeType.Decibel));
                 spDic.Add(amostra, fileInfo.Name[0].ToString());
 
                 double sampleMagnitude = amostra.GetMaximumAmplitude();
