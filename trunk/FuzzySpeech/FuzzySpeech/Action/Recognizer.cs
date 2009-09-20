@@ -34,13 +34,12 @@ namespace FuzzySpeech.Action
             RecognizerManager manager = RecognizerManager.Instance;
             foreach (Phoneme phoneme in genome.Phonemes)
             {
-                /*
+
                 //phoneme, similarity
                 recognitionDictionary.Add(
                     phoneme, manager.Similarity(phoneme, audioPhoneme)
                 );
-                 */
-                recognitionDictionary.Add(phoneme, Helper.Util.Random.NextDouble());
+
             }
 
             //Order the dictionary by greater similarity
