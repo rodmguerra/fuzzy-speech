@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace FuzzySpeech.Helper
+namespace FuzzySpeech.Common.Helper
 {
-    class Util
+    public class Util
     {
         
 

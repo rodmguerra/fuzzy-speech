@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using FuzzySpeech.Model;
 
-namespace FuzzySpeech.Helper
+namespace FuzzySpeech.Common.Helper
 {
     class SettingsFactory
     {

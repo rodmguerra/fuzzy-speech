@@ -254,7 +254,7 @@ namespace FuzzySpeech.Extractor
                          */
 
 
-                        p = Helper.Util.BitReverse(k >> nu1, nu);
+                        p = Common.Helper.Util.BitReverse(k >> nu1, nu);
                         arg = 2 * (double)Math.PI * p / n;
                         c = (double)Math.Cos(arg);
                         s = (double)Math.Sin(arg);
@@ -276,7 +276,7 @@ namespace FuzzySpeech.Extractor
             int r;
             while (k < n)
             {
-                r = Helper.Util.BitReverse(k, nu);
+                r = Common.Helper.Util.BitReverse(k, nu);
                 if (r > k)
                 {
                     tr = xre[k];
@@ -363,7 +363,7 @@ namespace FuzzySpeech.Extractor
                 for (int i = 0; i < reducted.BandsByFrame; i++)
                 {
                     int rangeBandCount = ((i*bandsByRange + bandsByRange) > sample.BandsByFrame) ? sample.BandsByFrame - i*bandsByRange : bandsByRange;
-                    reductedFrame[i] = Helper.Util.MaxNPercent(frame.GetBandRange(i*bandsByRange, rangeBandCount), nPercentMaxValues);
+                    reductedFrame[i] = Common.Helper.Util.MaxNPercent(frame.GetBandRange(i*bandsByRange, rangeBandCount), nPercentMaxValues);
                 }
                 reducted.Frames.Add(reductedFrame);
             }

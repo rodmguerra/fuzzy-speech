@@ -43,7 +43,7 @@ namespace FuzzySpeech.Managers
             }
 
             //step 2: Color compatibility aggregation
-            return Helper.Util.AverageNPercent(compatibilities, 0.8);
+            return Common.Helper.Util.AverageNPercent(compatibilities, 0.8);
         }
 
         /// <summary>

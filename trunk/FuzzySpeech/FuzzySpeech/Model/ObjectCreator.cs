@@ -55,7 +55,7 @@ namespace FuzzySpeech.Model
             for (int i = 0; i < newPhoneme.NumberOfBands; i++)
             {
                 band = new PhonemeBand(settings.ColorsByBand);
-                colorIndex = Helper.Util.Random.Next(settings.NumberOfColors - settings.ColorsByBand + 1);
+                colorIndex = Common.Helper.Util.Random.Next(settings.NumberOfColors - settings.ColorsByBand + 1);
                 for (int j = 0; j < newPhoneme.ColorsByBand; j++)
                 {
                     band.ColorIDs[j] = colorIndex;
@@ -67,7 +67,7 @@ namespace FuzzySpeech.Model
 
 
             //Assign a random length
-            int lengthIndex = Helper.Util.Random.Next(settings.NumberOfLengths);
+            int lengthIndex = Common.Helper.Util.Random.Next(settings.NumberOfLengths);
             newPhoneme.LengthID = lengthIndex;
 
             //Assign the name

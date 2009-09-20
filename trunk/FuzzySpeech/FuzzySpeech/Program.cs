@@ -7,7 +7,7 @@ using FuzzySpeech.Model;
 using FuzzySpeech.Audio;
 using FuzzySpeech.Action;
 using FuzzySpeech.Managers;
-using FuzzySpeech.Helper;
+using FuzzySpeech.Common.Helper;
 using System.Xml;
 using System.IO;
 

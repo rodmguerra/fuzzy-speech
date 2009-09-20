@@ -62,7 +62,6 @@
     <Compile Include="Managers\RecognizerManager.cs" />
     <Compile Include="Model\CommonObject.cs" />
     <Compile Include="Managers\GeneticManager.cs" />
-    <Compile Include="Model\IXmlable.cs" />
     <Compile Include="Model\ObjectCreator.cs" />
     <Compile Include="UI\Form1.cs">
       <SubType>Form</SubType>
@@ -99,7 +98,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Helper\Util.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FuzySpeech.Common\FuzySpeech.Common.csproj">
+      <Project>{1B608466-AF2C-4872-A55A-D55A0AF49187}</Project>
+      <Name>FuzySpeech.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

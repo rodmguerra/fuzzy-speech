@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-namespace FuzzySpeech.Model
+namespace FuzzySpeech.Common.Interfaces
 {
-    interface IXmlable
+    public interface IXmlable
     {
         void FromXml(XmlDocument xmlDocument);
         XmlDocument ToXml();

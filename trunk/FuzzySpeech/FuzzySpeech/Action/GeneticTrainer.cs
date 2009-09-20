@@ -5,7 +5,7 @@ using System.Text;
 using FuzzySpeech.Model;
 using FuzzySpeech.Audio;
 using FuzzySpeech.Managers;
-using FuzzySpeech.Helper;
+using FuzzySpeech.Common.Helper;
 
 namespace FuzzySpeech.Action
 {
@@ -67,7 +67,7 @@ namespace FuzzySpeech.Action
                 }
 
                 //Add the crossovers of the randomly choosen mates from the original genomes to the genepool
-                List<int> matesList = Helper.Util.RandomInt32List(numberOfGenomes, numberOfGenomes);
+                List<int> matesList = Common.Helper.Util.RandomInt32List(numberOfGenomes, numberOfGenomes);
                 for (int i = 0; i < numberOfGenomes; i+=2)
                 {
                     RecognizerGenome genome;
