@@ -55,7 +55,6 @@
     <Compile Include="FeatureExtractor\WaveFormat.cs" />
     <Compile Include="FeatureExtractor\WaveStream.cs" />
     <Compile Include="Helper\SettingsFactory.cs" />
-    <Compile Include="Managers\RecognizerManager.cs" />
     <Compile Include="Managers\GeneticManager.cs" />
     <Compile Include="UI\Form1.cs">
       <SubType>Form</SubType>
