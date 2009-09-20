@@ -46,16 +46,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Managers\RecognizerManager.cs" />
-    <Compile Include="Model\Collections\PhonemeBandCollection.cs" />
-    <Compile Include="Model\Collections\RecognizerGenomePhonemeCollection.cs" />
-    <Compile Include="Model\FuzzyColor.cs" />
-    <Compile Include="Model\FuzzyLength.cs" />
-    <Compile Include="Model\FuzzySet.cs" />
-    <Compile Include="Model\GeneticSettings.cs" />
-    <Compile Include="Model\ObjectCreator.cs" />
-    <Compile Include="Model\Phoneme.cs" />
-    <Compile Include="Model\PhonemeBand.cs" />
-    <Compile Include="Model\RecognizerGenome.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
