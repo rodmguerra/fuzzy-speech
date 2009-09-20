@@ -88,6 +88,18 @@
       <Project>{1B608466-AF2C-4872-A55A-D55A0AF49187}</Project>
       <Name>FuzySpeech.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FuzzySpeech.Extractor\FuzzySpeech.Extractor.csproj">
+      <Project>{86DC3CDA-7A23-4482-AEC5-5375B2250D68}</Project>
+      <Name>FuzzySpeech.Extractor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FuzzySpeech.Recognizer\FuzzySpeech.Recognizer.csproj">
+      <Project>{A3F5AD83-227A-4AA3-8F80-F309218B34D3}</Project>
+      <Name>FuzzySpeech.Recognizer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FuzzySpeech.Trainer\FuzzySpeech.Trainer.csproj">
+      <Project>{2FFDF656-CEA0-4D82-AB75-23811A061C0A}</Project>
+      <Name>FuzzySpeech.Trainer</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
