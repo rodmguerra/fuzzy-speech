@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuzzySpeech.ConsoleApp", "FuzzySpeech.ConsoleApp\FuzzySpeech.ConsoleApp.csproj", "{7303C6D9-6947-4DEE-8840-C246BBFA6C12}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuzySpeech.Common", "FuzySpeech.Common\FuzySpeech.Common.csproj", "{1B608466-AF2C-4872-A55A-D55A0AF49187}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuzzySpeech.Extractor", "FuzzySpeech.Extractor\FuzzySpeech.Extractor.csproj", "{86DC3CDA-7A23-4482-AEC5-5375B2250D68}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuzzySpeech.Trainer", "FuzzySpeech.Trainer\FuzzySpeech.Trainer.csproj", "{2FFDF656-CEA0-4D82-AB75-23811A061C0A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuzzySpeech.Recognizer", "FuzzySpeech.Recognizer\FuzzySpeech.Recognizer.csproj", "{A3F5AD83-227A-4AA3-8F80-F309218B34D3}"
+EndProject
+Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7303C6D9-6947-4DEE-8840-C246BBFA6C12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7303C6D9-6947-4DEE-8840-C246BBFA6C12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7303C6D9-6947-4DEE-8840-C246BBFA6C12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7303C6D9-6947-4DEE-8840-C246BBFA6C12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B608466-AF2C-4872-A55A-D55A0AF49187}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B608466-AF2C-4872-A55A-D55A0AF49187}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B608466-AF2C-4872-A55A-D55A0AF49187}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B608466-AF2C-4872-A55A-D55A0AF49187}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86DC3CDA-7A23-4482-AEC5-5375B2250D68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86DC3CDA-7A23-4482-AEC5-5375B2250D68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86DC3CDA-7A23-4482-AEC5-5375B2250D68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86DC3CDA-7A23-4482-AEC5-5375B2250D68}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FFDF656-CEA0-4D82-AB75-23811A061C0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FFDF656-CEA0-4D82-AB75-23811A061C0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FFDF656-CEA0-4D82-AB75-23811A061C0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FFDF656-CEA0-4D82-AB75-23811A061C0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3F5AD83-227A-4AA3-8F80-F309218B34D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3F5AD83-227A-4AA3-8F80-F309218B34D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3F5AD83-227A-4AA3-8F80-F309218B34D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3F5AD83-227A-4AA3-8F80-F309218B34D3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
