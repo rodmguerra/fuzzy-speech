@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuzzySpeech.ConsoleApp", "FuzzySpeech\FuzzySpeech.ConsoleApp.csproj", "{7303C6D9-6947-4DEE-8840-C246BBFA6C12}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuzzySpeech.ConsoleApp", "FuzzySpeech.ConsoleApp\FuzzySpeech.ConsoleApp.csproj", "{7303C6D9-6947-4DEE-8840-C246BBFA6C12}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuzySpeech.Common", "FuzySpeech.Common\FuzySpeech.Common.csproj", "{1B608466-AF2C-4872-A55A-D55A0AF49187}"
 EndProject
