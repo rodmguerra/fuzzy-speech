@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using FuzzySpeech.Common.Interfaces;
 using FuzzySpeech.Common.Helper;
 
 namespace FuzzySpeech.Model
