@@ -45,6 +45,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Audio\AudioFrame.cs" />
+    <Compile Include="Audio\AudioSample.cs" />
+    <Compile Include="Audio\AudioSignal.cs" />
+    <Compile Include="Audio\Collections\AudioFrameCollection.cs" />
+    <Compile Include="Interfaces\ICommonObject.cs" />
     <Compile Include="Interfaces\IXmlable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Helper\Util.cs" />
